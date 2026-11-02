@@ -6,8 +6,9 @@
 
 M. **リポジトリ移行(コード側は完了・旧リポジトリ削除待ち)**: `ken-okabe` アカウントでは干渉が発生するため、`asahi-kenokabe` アカウントで行う。さらにルートURL(`https://asahi-kenokabe.github.io/`)で公開するため、`asahi-kenokabe/asahi-kenokabe.github.io`(ユーザーサイト)に移した。
    - 経緯: `ken-okabe/asahi-hp` → `asahi-kenokabe/asahi-hp`(プロジェクトサイト、`/asahi-hp/` 配下)で公開確認(到達ページ64、画像・CSS等258URLがすべて HTTP 200、不達0、`dekiteru` 参照0。Pages の Source は「GitHub Actions」にする必要があった)→ 全履歴を `asahi-kenokabe/asahi-kenokabe.github.io` の `main` に移行。
+   - 検証(2026-11-02、`https://asahi-kenokabe.github.io/` をトップからクロール): 到達ページ64、画像・CSS等258URLがすべて HTTP 200 かつ HTML エラーページではない。不達0、`dekiteru` 参照0、`/asahi-hp` 付きリンク0。Pages の Source は「GitHub Actions」に設定済み(未設定の間は Jekyll の自動ビルドが失敗する)。
    - 本リポジトリでは、仮URL用ベースパス処理(`deploy.yml` の `prefix-base.mjs` ステップ)を撤去した(ルート配信のため)。`tools/prefix-base.mjs` は無害なので残す。
-   - 残り(ユーザー実施。エージェントは実行しない): 本リポジトリの Pages 有効化(Source: GitHub Actions)と公開確認の後、`asahi-kenokabe/asahi-hp` と `ken-okabe/asahi-hp` を削除する。
+   - 残り(ユーザー実施。エージェントは実行しない): ルート公開を目視確認した後、`asahi-kenokabe/asahi-hp` と `ken-okabe/asahi-hp` を削除する。
    - 独自ドメイン接続時: `CNAME` の追加のみ(ベースパス処理は撤去済み)。
 
 1. **Googleフォームの作成**: 「お問合せ」「お見積り」の2種類。作成後、埋め込みURLを `src/components/ContactForm.astro` の `formUrl` に設定する(現在は電話案内を表示)。お見積り用ページ(`estimate.html` は元サイトで404のため、新規作成するか要判断)。
