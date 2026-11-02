@@ -208,3 +208,37 @@ main tr > th:first-child:nth-last-child(2) { white-space: nowrap; }
   .brand-name { font-size: clamp(1.05rem, 5.4vw, 1.25rem); }
   .head-tel { padding: 6px 12px; }
 }
+
+/* 「お問い合わせ・お見積りはこちら」バナー: 紺の背景に白文字(色だけに頼らない高コントラスト) */
+.banner-contact { display: flex; align-items: center; gap: 20px; margin: 4px 0 18px; padding: 14px 18px; border-radius: var(--radius); background: var(--c-main); color: #fff; clear: both; }
+.banner-contact img { flex: 0 0 auto; width: 84px; height: auto; border-radius: 6px; }
+.banner-contact .bc-body { flex: 1; min-width: 0; }
+.banner-contact p { margin: 0; }
+.banner-contact .bc-title { font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
+.banner-contact .bc-tel { margin: 2px 0 6px; }
+.banner-contact .bc-tel a { color: #fff; font-size: clamp(1.4rem, 6.4vw, 2rem); font-weight: 700; letter-spacing: .03em; text-decoration: none; white-space: nowrap; }
+.banner-contact .bc-form a { display: inline-block; padding: 6px 18px; border-radius: 999px; background: #fff; color: var(--c-main); font-size: .9rem; font-weight: 700; text-decoration: none; }
+.banner-contact .bc-form a:hover { background: #ffe9d6; }
+
+/* 料金表: 列が極端に細くならないよう幅を確保し、横にスクロールさせる */
+.smt_scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.smt_scroll table.pricetable { min-width: 820px; table-layout: fixed; }
+.smt_scroll table.pricetable th:first-child, .smt_scroll table.pricetable td:first-child { width: 7em; }
+.smt_scroll table.pricetable td { word-break: keep-all; overflow-wrap: anywhere; }
+.smt_scroll table.pricetable img { display: block; margin: 0 auto; }
+.smt_scroll::before { content: "▶ 表は横にスクロールできます"; display: none; margin: 0 0 6px; font-size: .78rem; color: var(--c-sub); }
+@media (max-width: 800px) { .smt_scroll::before { display: block; } }
+/* 料金表: 横スクロール中も左端の項目名を表示し続ける */
+.smt_scroll table.pricetable th:first-child, .smt_scroll table.pricetable td:first-child { position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--c-line); }
+.smt_scroll table.pricetable th:first-child { background: #eef3f9; }
+/* バナー: 狭い画面では、ロゴ+見出しの下に、電話番号とボタンを全幅で並べる */
+@media (max-width: 520px) {
+  .banner-contact { display: grid; grid-template-columns: 64px 1fr; gap: 10px 14px; align-items: center; padding: 14px; }
+  .banner-contact img { width: 64px; grid-row: 1; grid-column: 1; }
+  .banner-contact .bc-body { display: contents; }
+  .banner-contact .bc-title { grid-row: 1; grid-column: 2; font-size: .95rem; }
+  .banner-contact .bc-tel { grid-column: 1 / -1; margin: 0; }
+  .banner-contact .bc-tel a { font-size: clamp(1rem, 6.6vw, 2rem); }
+  .banner-contact .bc-form { grid-column: 1 / -1; }
+  .banner-contact .bc-form a { display: block; text-align: center; padding: 9px 16px; }
+}

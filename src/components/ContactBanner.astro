@@ -1,0 +1,14 @@
+---
+import site from '../data/site.json';
+// 「お問い合わせ・お見積りはこちら」の帯。元サイトは赤文字・黒背景の画像(色覚への配慮がなく、文字も画像内)だったため、
+// 文字のバナーに置き換えた(紺の背景に白文字。電話番号はタップで発信できる)。decisions.md 参照。
+const telHref = `tel:${site.tel.replaceAll('-', '')}`;
+---
+<div class="banner-contact">
+  <img src="/images/contact-banner-logo.webp" alt="" width="140" height="181" loading="lazy" />
+  <div class="bc-body">
+    <p class="bc-title">お問い合わせ・お見積りはこちら</p>
+    <p class="bc-tel"><a href={telHref}>TEL：{site.tel}</a></p>
+    <p class="bc-form"><a href="/contact.html">お問合せフォーム</a></p>
+  </div>
+</div>
