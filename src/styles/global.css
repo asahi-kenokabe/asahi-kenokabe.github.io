@@ -16,7 +16,7 @@
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; margin: 0; font-family: "Noto Sans JP", system-ui, sans-serif; color: var(--c-text); background: var(--c-bg); line-height: 1.85; -webkit-text-size-adjust: 100%; }
+body { line-break: strict; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; margin: 0; font-family: "Noto Sans JP", system-ui, sans-serif; color: var(--c-text); background: var(--c-bg); line-height: 1.85; -webkit-text-size-adjust: 100%; }
 img { max-width: 100%; height: auto; }
 a { color: var(--c-main-2); text-underline-offset: 3px; }
 a:hover { color: var(--c-accent-dark); }
@@ -287,3 +287,8 @@ main .store-card h2 span, main .access-hours h2 span { display: inline-block; }
   main table:not(.pricetable) td { padding-top: 6px; }
 }
 @media (max-width: 480px) { main table:not(.pricetable) th { text-align: left; } }
+
+/* 日本語の改行: 禁則を厳しくし(小さい「ィ」「ッ」や長音「ー」を行頭に置かない)、本文は文節の区切りで折り返す。
+   見出し・リンク・表のセルは、text-wrap: balance との相性のため、auto-phrase を使わない。 */
+main p, main dd { word-break: auto-phrase; }
+main p a { word-break: normal; }
