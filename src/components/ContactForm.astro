@@ -1,17 +1,17 @@
 ---
 import site from '../data/site.json';
-// お問合せは Google フォーム(決定事項)。埋め込み(iframe)は、ブラウザの第三者 Cookie 制限で
-// 「Cookie を許可してください」「ログインしてください」と表示されるため使わず、別のページで開く方式にする(decisions.md 参照)。
+// お問合せは Google フォーム(決定事項)。サイト内に埋め込み(iframe)で表示し、
+// 埋め込みが表示されない環境のために、別のページで開くボタンも置く(decisions.md 参照)。
 const formPage = 'https://docs.google.com/forms/d/e/1FAIpQLSeAa0SaycUAIJtYg4dGlJR21oIGAUU7qQ20SVCFY4COyWAYHQ/viewform';
+const formUrl = `${formPage}?embedded=true`;
 ---
 <div class="contact-form" data-block="contact_form">
   <h2>メールでのお問合せ</h2>
   {formPage ? (
-    <div class="form-open">
-      <p>お名前・メールアドレス・お電話番号・ご相談内容をご入力いただくフォームです。</p>
-      <p><a class="button" href={formPage} target="_blank" rel="noopener">お問合せフォームを開く</a></p>
-      <p class="form-note">ボタンを押すと、別のページでフォームが開きます。</p>
-    </div>
+    <>
+      <iframe src={formUrl} title="お問合せフォーム" loading="lazy" height="1150"></iframe>
+      <p class="form-fallback">フォームが表示されない場合は、こちらから別のページで開いてください。<br /><a class="button" href={formPage} target="_blank" rel="noopener">お問合せフォームを開く</a></p>
+    </>
   ) : (
     <p class="notice">
       お問合せフォームは準備中です。お手数ですが、お電話にてご連絡ください。<br />
