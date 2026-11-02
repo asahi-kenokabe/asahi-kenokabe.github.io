@@ -23,9 +23,11 @@
 
 - すべてのフェーズで、結果が正しく完全であることをダブルチェックしてから次に進む。取りこぼし、欠落、偽の成功(HTTP 200 で HTML のエラーページが返る等)を放置しない。
 - 検証した内容と結果(未解決の項目を含む)は、該当するドキュメントに記録する。
+- **見た目(HTML・CSS・レイアウト)を変更したら、完了の報告の前に、必ず `npm run build && npm run check:layout` を実行し、問題0件にする。** 全ページを、複数の画面幅(320〜1280px)と文字拡大(1.3倍)で自動検査し、電話番号の折り返し、1文字だけの行、横はみ出し、コントラスト不足、壊れた画像を検出する。検査が通ったあとで、主要ページを目視でも確認する。ユーザーに、崩れを指摘させない。
 
 ## 開発コマンド
 
 - `npm run build`: ビルド(`dist/` に出力)。`npm run dev`: 開発サーバー。
 - 元サイトの本文を再抽出する場合: `python3 -I tools/extract.py`(`backup/original` が入力)。検証は `npm run build` 後に `python3 -I tools/verify.py`。
+- レイアウトの自動検査: `npm run build` 後に `npm run check:layout`(`tools/layout-check.cjs`、Playwright が必要)。
 - 生成物の詳細・検証結果・未対応事項は `extraction-report.md` を参照。

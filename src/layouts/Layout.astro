@@ -125,7 +125,7 @@ const footerNav = nav.filter((c) => !c.children.length && c.href !== 'index.html
 
     <footer class="site-footer">
       <p class="name">{site.name}</p>
-      <p>{site.address} / TEL {site.tel}</p>
+      <p>{site.address} / <a href={`tel:${site.tel.replaceAll('-', '')}`}>TEL {site.tel}</a></p>
       <ul>{footerNav.map((c) => <li><a href={`/${c.href}`}>{c.title}</a></li>)}</ul>
       <p class="copy">&copy; {new Date().getFullYear()} {site.name}</p>
     </footer>
