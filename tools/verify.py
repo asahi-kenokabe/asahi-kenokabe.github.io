@@ -20,7 +20,7 @@ EXPECTED = {
 }
 SKIP = {'thankyou', 'thankyou_c', 'thankyou_ec', 'thankyou_es', 'thankyou_s', '404'}
 
-def norm(t): return re.sub(r'[\s　\xa0]+', '', t)
+def norm(t): return re.sub(r'！{2,}', '！', re.sub(r'[\s　\xa0]+', '', t))   # 連続する「！」は1つにまとめた(decisions.md 参照)。両側に同じ変換をかける
 def soup(f): return BeautifulSoup(open(f, encoding='utf-8').read(), 'lxml')
 
 def orig_parts(f):
