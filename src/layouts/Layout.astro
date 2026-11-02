@@ -63,8 +63,6 @@ const footerNav = nav.filter((c) => !c.children.length && c.href !== 'index.html
       </nav>
     </header>
 
-    {site.notice && <p class="site-notice">{site.notice}</p>}
-
     <div class="layout">
       <main>
         {slug !== 'index' && crumbs.length > 0 && (
@@ -96,6 +94,18 @@ const footerNav = nav.filter((c) => !c.children.length && c.href !== 'index.html
       </main>
 
       <aside class="sidebar">
+        <section class="side-logo">
+          <a href="/"><img src="/images/10524_101_top.jpg.webp" alt="朝日自動車サービス外観" width="188" height="141" /></a>
+        </section>
+        <section class="side-hours">
+          <dl>
+            <dt>営業時間</dt>
+            {site.hours.map((h) => <dd>{h.label} {h.value}</dd>)}
+            <dt>定休日</dt>
+            <dd>{site.closed}</dd>
+          </dl>
+          {site.notice && <p class="side-notice">{site.notice}</p>}
+        </section>
         <section class="menu-tree">
           <h3>メニュー</h3>
           <ul>
@@ -117,7 +127,6 @@ const footerNav = nav.filter((c) => !c.children.length && c.href !== 'index.html
           <p class="name">{site.name}</p>
           <p>{site.address}</p>
           <p>TEL <a href={`tel:${site.tel}`}>{site.tel}</a></p>
-          <p>営業時間: {site.hours.map((h) => `${h.label}${h.value}`).join(' / ')}<br />定休日: {site.closed}</p>
           <p><a href="/access.html">アクセス・地図</a></p>
         </section>
       </aside>

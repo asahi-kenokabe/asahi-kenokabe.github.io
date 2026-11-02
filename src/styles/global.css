@@ -26,7 +26,7 @@ a { color: var(--c-main); }
 .global-nav li.current a, .global-nav li a:hover { background: var(--c-accent); }
 .site-notice { background: #fff3cd; margin-block: 0; padding-block: 8px; text-align: center; font-size: .9rem; }
 
-.layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; padding-block: 24px; }
+.layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; padding-block: 24px; }
 main { background: #fff; padding: 20px 24px 32px; border: 1px solid var(--c-line); border-radius: 6px; overflow-wrap: anywhere; }
 .breadcrumb { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 16px; font-size: .85rem; }
 .breadcrumb li + li::before { content: "›"; margin: 0 .5em; color: #888; }
@@ -69,6 +69,7 @@ iframe { max-width: 100%; border: 0; width: 100%; min-height: 360px; }
 
 @media (max-width: 800px) {
   .layout { grid-template-columns: 1fr; }
+  .sidebar { order: 0; }
   main { padding: 16px; }
   .head-contact { text-align: left; }
   .global-nav .nav-pc { display: none; }
@@ -94,3 +95,19 @@ main .store-card h2 a, .store-card .tel-btn { color: #fff; }
 .store-address { margin: 12px 18px 0; font-size: 1.1rem; font-weight: 700; }
 .store-note { margin: 4px 18px 16px; }
 .store-card .store-address:last-child { margin-bottom: 16px; }
+
+/* サイドバーは左(元サイトと同じ)。スマホでは本文の後ろ */
+.layout > .sidebar { order: -1; }
+@media (max-width: 800px) { .layout > .sidebar { order: 0; } }
+.sidebar .side-logo { padding: 8px; text-align: center; }
+.sidebar .side-logo img { display: block; width: 100%; height: auto; border: 1px solid var(--c-line); }
+.sidebar .side-hours dl { margin: 0; }
+.sidebar .side-hours dt { font-weight: 700; color: var(--c-main); }
+.sidebar .side-hours dd { margin: 0 0 6px; }
+.sidebar .side-notice { margin: 8px 0 0; padding-top: 8px; border-top: 1px dotted var(--c-line); font-weight: 700; color: #b34700; }
+/* トップ: 大きなキャッチ(創業50年)→ サービス業です、を続けて表示 */
+.top-hero { margin-bottom: 28px; }
+.top-hero .block_outer_campaign h2 { margin-top: 0; }
+.top-hero .block_outer_img_h2_0 { margin-top: 0; padding: 18px 20px; border: 1px solid var(--c-line); border-top: 0; background: #fff; }
+.top-hero .block_outer_img_h2_0 .catch_copy { margin: 0 0 8px; font-size: 1.6rem; font-weight: 700; color: var(--c-main); }
+.top-hero .block_outer_img_h2_0 .main_copy { margin: 0; }

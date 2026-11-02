@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup
 BASE = 'https://www.lotas-asahi.com/'
 # 元サイトから意図的に構成を変更したページ(decisions.md 参照)。本文・画像・リンクの突き合わせは行わず、壊れた画像のみ検査する
 REDESIGNED = {'access'}
+# ブロックの並び順だけを意図的に変えたページ(decisions.md 参照)。ブロック単位の本文が一致するかを、順序を無視して検査する
+REORDERED = {'index'}
 SKIP = {'thankyou', 'thankyou_c', 'thankyou_ec', 'thankyou_es', 'thankyou_s', '404'}
 
 def norm(t): return re.sub(r'[\s　\xa0]+', '', t)
@@ -55,6 +57,10 @@ for f in sorted(glob.glob('backup/original/pages/*.html')):
     errs = []
     if slug in REDESIGNED:
         oi, bi, ol, bl, ot = [], [], [], [], bt
+    if slug in REORDERED:
+        blk = lambda x: sorted(norm(d.get_text()) for d in x.find_all(class_='block_outer'))
+        if blk(o) != blk(b) or not blk(o): errs.append('block texts differ (order ignored)')
+        ot = bt
     if ot != bt: errs.append(f'text differs (orig {len(ot)} vs built {len(bt)})')
     if oi != bi: errs.append(f'images differ: {set(oi) ^ set(bi)}')
     if ol != bl: errs.append(f'links differ: {set(ol) ^ set(bl)}')
