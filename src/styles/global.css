@@ -247,7 +247,8 @@ main tr > th:first-child:nth-last-child(2) { white-space: nowrap; }
 /* 折り返しの品質: 見出し・リンク・ボタン・表のセルは、行の長さを均等にして、1文字だけの行を作らない。
    (word-break: auto-phrase は、text-wrap: balance と併用すると均等に折り返されず、1文字だけの行が増えたため使わない。) */
 h1, h2, h3, h4, h5, h6, .button, .hero-btn, .siblings a, .menu-tree a, .sidebar details a, th, td, summary, .bc-title, .nav_link, .store-address { text-wrap: balance; }
-p, li, dd { text-wrap: pretty; }
+li { text-wrap: pretty; }   /* 短いリスト項目のみ。長い段落には使わない(下記) */
+/* 本文の段落には text-wrap: pretty を使わない: iOS 26 の Safari(WebKit)は、段落全体の行の長さをそろえるため、行を短めに折り返し、右側に不自然な余白ができた。 */
 a[href^="tel:"], .tel-nowrap { white-space: nowrap; }
 
 /* 狭い画面・文字拡大時: 長いカタカナの見出しが幅に収まるよう、見出しの文字サイズを画面幅に合わせて下げる */
@@ -292,3 +293,8 @@ main .store-card h2 span, main .access-hours h2 span { display: inline-block; }
    見出し・リンク・表のセルは、text-wrap: balance との相性のため、auto-phrase を使わない。 */
 main p, main dd { word-break: auto-phrase; }
 main p a { word-break: normal; }
+
+/* 社名など、途中で切れてはいけない語 */
+.nb { white-space: nowrap; }
+
+.pricetabel_memo { font-size: .9rem; }   /* 料金表の注記(長いリンク文字が、文字拡大時も折り返さないように) */

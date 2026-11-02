@@ -88,7 +88,7 @@ function inPage() {
       const lines = lineInfo(node);
       if (lines.length >= 2) {
         const bad = lines.find((l) => l.chars.length === 1 && !/[。、．，！？」）)]/.test(l.chars[0]));
-        if (bad) push('orphan-char', el, `「${bad.chars[0]}」だけの行 / ${lines.length}行`);
+        if (bad) push('orphan-char', el, `「${bad.chars[0]}」だけの行 / ${lines.length}行 [${lines.map((l) => l.chars.join('')).join(' | ')}]`);
       }
     }
     // コントラスト
@@ -123,7 +123,8 @@ function inPage() {
 
 (async () => {
   if (!fs.existsSync(DIST)) { console.error('dist/ がありません。先に npm run build を実行してください。'); process.exit(2); }
-  const pages = fs.readdirSync(DIST).filter((f) => f.endsWith('.html')).sort();
+  // デバッグ用: ONLY_PAGE=shaken.html ONLY_W=360 で、対象のページ・幅を絞れる
+  const pages = fs.readdirSync(DIST).filter((f) => f.endsWith('.html') && (!process.env.ONLY_PAGE || f === process.env.ONLY_PAGE)).sort();
   const server = await serve(); const base = `http://localhost:${server.address().port}`;
   const browser = await chromium.launch();
   const found = new Map(); // key -> {type, sel, detail, text, where:Set}
@@ -145,7 +146,7 @@ function inPage() {
     }
     await ctx.close();
   };
-  const queue = [...VIEWPORTS];
+  const queue = VIEWPORTS.filter((v) => !process.env.ONLY_W || String(v.w) === process.env.ONLY_W);
   await Promise.all([0, 1, 2, 3].map(async () => { while (queue.length) await runViewport(queue.shift()); }));
   await browser.close(); server.close();
   const list = [...found.values()].sort((a, b) => a.type.localeCompare(b.type) || b.where.size - a.where.size);
