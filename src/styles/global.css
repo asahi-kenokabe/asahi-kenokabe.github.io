@@ -185,3 +185,9 @@ main .access-hours h2 span, main .store-card h2 span { margin-left: .9em; font-s
   .cta { padding: 24px 20px; }
   .siblings ul { columns: 1; }
 }
+
+/* 会社概要など: 表の中で項目を1行ずつ並べる(TEL / FAX、午前 / 午後) */
+.contact-lines { display: flex; flex-direction: column; gap: 2px; margin: 0; }
+.contact-lines a { color: var(--c-main-2); }
+/* 「項目名 | 内容」の2列表: 項目名を途中で折り返さない */
+main tr > th:first-child:nth-last-child(2) { white-space: nowrap; }

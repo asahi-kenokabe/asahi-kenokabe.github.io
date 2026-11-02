@@ -9,6 +9,13 @@ BASE = 'https://www.lotas-asahi.com/'
 REDESIGNED = {'access'}
 # ブロックの並び順だけを意図的に変えたページ(decisions.md 参照)。ブロック単位の本文が一致するかを、順序を無視して検査する
 REORDERED = {'index'}
+# 表記だけを意図的に直したページ(decisions.md 参照): 元の本文に適用する置換と、追加したリンク。それ以外の差分は従来どおり NG にする
+EXPECTED = {
+    'company': {
+        'text': [('TEL:078', 'TEL：078'), ('FAX:078', 'FAX：078'), ('9：00～12：00午後 13：00～17：00', '9:00〜12:00午後13:00〜17:00')],
+        'added_links': {'tel:0785915399', 'tel:0785915362'},
+    },
+}
 SKIP = {'thankyou', 'thankyou_c', 'thankyou_ec', 'thankyou_es', 'thankyou_s', '404'}
 
 def norm(t): return re.sub(r'[\s　\xa0]+', '', t)
@@ -57,6 +64,9 @@ for f in sorted(glob.glob('backup/original/pages/*.html')):
     errs = []
     if slug in REDESIGNED:
         oi, bi, ol, bl, ot = [], [], [], [], bt
+    if slug in EXPECTED:
+        for old, new in EXPECTED[slug]['text']: ot = ot.replace(norm(old), norm(new))
+        ol = sorted(ol + sorted(EXPECTED[slug]['added_links']))
     if slug in REORDERED:
         blk = lambda x: sorted(norm(d.get_text()) for d in x.find_all(class_='block_outer'))
         if blk(o) != blk(b) or not blk(o): errs.append('block texts differ (order ignored)')
