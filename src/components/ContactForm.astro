@@ -1,12 +1,14 @@
 ---
 import site from '../data/site.json';
-// Googleフォームの埋め込みURL。作成後にここへ設定する(決定事項: フォームはGoogleフォーム)。
-const formUrl = '';
+// Googleフォーム(決定事項: お問合せフォームは Google フォーム)。埋め込み用 URL と、別タブで開く URL。
+const formPage = 'https://docs.google.com/forms/d/e/1FAIpQLSfcf0_wFZAsXK621wsJc80d-nNZ8WHOrnpi2ZdLnNQDQmQinw/viewform';
+const formUrl = `${formPage}?embedded=true`;
 ---
 <div class="contact-form" data-block="contact_form">
   <h2>メールでのお問合せ</h2>
   {formUrl ? (
-    <iframe src={formUrl} title="お問合せフォーム" loading="lazy" height="1200"></iframe>
+    <iframe src={formUrl} title="お問合せフォーム" loading="lazy" height="1100"></iframe>
+    <p class="form-fallback">フォームが表示されない場合は、こちらから別のページで開いてください。<br /><a class="button" href={formPage} target="_blank" rel="noopener">お問合せフォームを開く</a></p>
   ) : (
     <p class="notice">
       お問合せフォームは準備中です。お手数ですが、お電話にてご連絡ください。<br />

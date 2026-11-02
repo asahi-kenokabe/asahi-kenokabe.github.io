@@ -191,3 +191,9 @@ main .access-hours h2 span, main .store-card h2 span { margin-left: .9em; font-s
 .contact-lines a { color: var(--c-main-2); }
 /* 「項目名 | 内容」の2列表: 項目名を途中で折り返さない */
 main tr > th:first-child:nth-last-child(2) { white-space: nowrap; }
+
+/* お問合せフォーム(Google フォームの埋め込み + 別タブで開くボタン) */
+.contact-form { background: var(--c-card); border-radius: var(--radius); padding: 28px 32px; margin: 0 0 22px; box-shadow: var(--shadow); }
+.contact-form iframe { min-height: 1000px; }
+.form-fallback { margin: 18px 0 14px; padding: 16px 20px; border-radius: 10px; background: #eef3f9; font-size: .9rem; }
+@media (max-width: 800px) { .contact-form { padding: 20px 18px; } }
