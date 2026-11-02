@@ -291,10 +291,19 @@ main .store-card h2 span, main .access-hours h2 span { display: inline-block; }
 
 /* 日本語の改行: 禁則を厳しくし(小さい「ィ」「ッ」や長音「ー」を行頭に置かない)、本文は文節の区切りで折り返す。
    見出し・リンク・表のセルは、text-wrap: balance との相性のため、auto-phrase を使わない。 */
-main p, main dd { word-break: auto-phrase; }
-main p a { word-break: normal; }
 
 /* 社名など、途中で切れてはいけない語 */
 .nb { white-space: nowrap; }
 
 .pricetabel_memo { font-size: .9rem; }   /* 料金表の注記(長いリンク文字が、文字拡大時も折り返さないように) */
+
+/* 日本語の改行: ビルド後に、文節の境目へ <wbr> を入れている(tools/phrase-breaks.py)。
+   keep-all で、<wbr> の位置以外では改行しない。長い語が枠からはみ出さないよう overflow-wrap: anywhere。
+   これで、Chrome・Safari(iPhone)のどちらでも、同じ位置で、文節の途中では切れずに改行される。 */
+body { word-break: keep-all; overflow-wrap: anywhere; }
+
+/* 長いカタカナの語が、文字拡大時も1行に収まるよう、リストと小見出しの文字サイズの下限を少し下げる */
+@media (max-width: 800px) {
+  .siblings li, .menu-tree li, .sidebar details li { font-size: clamp(.8rem, 3.6vw, .95rem); }
+  main h3 { font-size: clamp(.9rem, 4.2vw, 1.1rem); }
+}

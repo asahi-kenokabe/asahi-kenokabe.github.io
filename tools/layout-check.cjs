@@ -57,16 +57,21 @@ function inPage() {
   });
 
   // テキストノードごとの検査
-  const lineInfo = (node) => {
-    const text = node.textContent; const lines = []; let last = null;
+  // 要素の中のすべてのテキストノードを通して、行ごとの文字を数える(文節の境目に <wbr> を入れて、テキストノードが細かく分かれていても、正しく数えるため)
+  const lineInfoEl = (el) => {
+    const lines = []; let last = null;
     const range = document.createRange();
-    for (let i = 0; i < text.length; i++) {
-      if (/\s/.test(text[i])) continue;
-      range.setStart(node, i); range.setEnd(node, i + 1);
-      const rects = range.getClientRects(); if (!rects.length) continue;
-      const top = Math.round(rects[0].top / 4);
-      if (last === null || top !== last.top) { last = { top, chars: [] }; lines.push(last); }
-      last.chars.push(text[i]);
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
+    while ((n = w.nextNode())) {
+      const text = n.textContent;
+      for (let i = 0; i < text.length; i++) {
+        if (/\s/.test(text[i])) continue;
+        range.setStart(n, i); range.setEnd(n, i + 1);
+        const rects = range.getClientRects(); if (!rects.length) continue;
+        const top = Math.round(rects[0].top / 4);
+        if (last === null || top !== last.top) { last = { top, chars: [] }; lines.push(last); }
+        last.chars.push(text[i]);
+      }
     }
     return lines;
   };
@@ -82,14 +87,6 @@ function inPage() {
       const range = document.createRange(); range.setStart(node, m.index); range.setEnd(node, m.index + m[0].length);
       const tops = new Set([...range.getClientRects()].map((r) => Math.round(r.top / 4)));
       if (tops.size > 1) push('phone-wrapped', el, m[0]);
-    }
-    const inP = el.closest('p') && !el.closest('td,th,li,a,button');
-    if (el.closest(UI) && !inP && t.trim().length >= 3 && !/^https?:\/\//.test(t.trim())) {   // URL の文字列は、どこで折り返しても読めるので対象外
-      const lines = lineInfo(node);
-      if (lines.length >= 2) {
-        const bad = lines.find((l) => l.chars.length === 1 && !/[。、．，！？」）)]/.test(l.chars[0]));
-        if (bad) push('orphan-char', el, `「${bad.chars[0]}」だけの行 / ${lines.length}行 [${lines.map((l) => l.chars.join('')).join(' | ')}]`);
-      }
     }
     // コントラスト
     const cs = getComputedStyle(el);
@@ -111,6 +108,20 @@ function inPage() {
       }
     }
   }
+  // 見出し・リンク・ボタン・表のセル・ナビで、1文字だけの行ができていないか(要素全体で数える)
+  const seen = new Set();
+  document.querySelectorAll(UI).forEach((el) => {
+    if (seen.has(el) || !visible(el)) return;
+    const inP = el.closest('p') && !el.closest('td,th,li,a,button');
+    const txt = el.textContent.trim();
+    if (inP || txt.length < 3 || /^https?:\/\//.test(txt)) return;
+    seen.add(el);
+    const lines = lineInfoEl(el);
+    if (lines.length >= 2) {
+      const bad = lines.find((l) => l.chars.length === 1 && !/[。、．，！？」）)]/.test(l.chars[0]));
+      if (bad) push('orphan-char', el, `「${bad.chars[0]}」だけの行 / ${lines.length}行 [${lines.map((l) => l.chars.join('')).join(' | ')}]`);
+    }
+  });
   document.querySelectorAll('td,th').forEach((c) => {
     if (!visible(c)) return;
     const fs = parseFloat(getComputedStyle(c).fontSize); const txt = c.textContent.trim();

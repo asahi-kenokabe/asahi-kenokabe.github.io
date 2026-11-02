@@ -131,3 +131,13 @@
 - トップの見出し「車のことなら創業50年の実績！ロータスアサヒにお任せください！」は、文節ごとに折り返しをまとめた(`.nb` = `white-space: nowrap` の4つのまとまり)。社名が「ロータスアサ / ヒ」と途中で切れる問題を解消。同様の指定を、全見出しに広げると、前の単語と切り離されて、1文字だけの行が増えたため、トップの見出しと、料金表の注記のリンクだけに限定した。
 - **限界(重要)**: この環境には WebKit(Safari・iPhone 系)がなく、`tools/layout-check.cjs` は、Chromium だけで検査している。iPhone・Safari 固有の描画は、実機での確認が必要。Safari 固有の機能(`text-wrap: pretty`/`balance`、`line-break: strict` など)を使う場合は、実機で確認するまで、完了扱いにしない。
 - 検査ツールに、ページと幅を絞って実行する機能を追加(`ONLY_PAGE=shaken.html ONLY_W=360 node tools/layout-check.cjs`)。1文字だけの行は、その行の内容も表示する。
+
+## 日本語の改行を、全ブラウザで同じにする: BudouX(決定: 2026-11-02、ユーザーの質問「UI フレームワークで回避できないか」)
+
+- **UI フレームワーク(Bootstrap・Semantic UI など)では解決しない**: これらは、列の並びや部品を担当し、日本語の改行位置は、ブラウザの文字組みが決める。iPhone(Safari 系)は、文節を考えずに行の端で区切り、Chrome だけが `word-break: auto-phrase` で文節区切りにできるため、環境ごとに差が出ていた。
+- **対応**: ビルド後に、Google の BudouX(`pip install budoux`)で、全ページの日本語の文を文節に分け、文節の境目に `<wbr>`(改行してよい印)を入れる(`tools/phrase-breaks.py`、`npm run build` の `postbuild` で自動実行。約1.1万か所)。CSS は `body { word-break: keep-all; overflow-wrap: anywhere }` で、印の位置以外では改行しない。どのブラウザも `<wbr>` と `keep-all` に対応しているため、改行位置が同じになる。
+- 文章は変えない(`<wbr>` は文字を持たない)。元サイトとの突き合わせは、不一致0件のまま。
+- `.github/workflows/deploy.yml` に、`pip install budoux beautifulsoup4` の工程を追加。ローカルでビルドするときも、同じ pip install が必要。
+- 日本語と英数字が混ざる語(例: `VOL２`)は、BudouX が分割しないため、`.nb`(途中で折り返さない)で囲む。
+- `word-break: auto-phrase` は不使用に(BudouX と重複し、Chrome 以外では効かない)。長いカタカナの語が1行に収まらない場合は、文字サイズの下限を下げて対応。
+- `tools/layout-check.cjs` は、1文字だけの行を、要素全体で数えるようにした(`<wbr>` で文字が細かく分かれても、誤検出しない)。

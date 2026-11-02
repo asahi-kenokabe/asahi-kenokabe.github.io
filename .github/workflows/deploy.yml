@@ -24,6 +24,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # 日本語の文節区切り(<wbr>)をビルド後に入れる(tools/phrase-breaks.py)
+      - run: pip install budoux beautifulsoup4
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -27,7 +27,7 @@
 
 ## 開発コマンド
 
-- `npm run build`: ビルド(`dist/` に出力)。`npm run dev`: 開発サーバー。
+- `npm run build`: ビルド(`dist/` に出力)。ビルド後に、日本語の文節の境目へ `<wbr>` を入れる処理(`tools/phrase-breaks.py`)が自動で動く。事前に `pip install budoux beautifulsoup4` が必要。`npm run dev`: 開発サーバー(`<wbr>` は入らない)。
 - 元サイトの本文を再抽出する場合: `python3 -I tools/extract.py`(`backup/original` が入力)。検証は `npm run build` 後に `python3 -I tools/verify.py`。
 - レイアウトの自動検査: `npm run build` 後に `npm run check:layout`(`tools/layout-check.cjs`、Playwright が必要)。
 - 生成物の詳細・検証結果・未対応事項は `extraction-report.md` を参照。

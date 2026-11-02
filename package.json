@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check:layout": "node tools/layout-check.cjs"
+    "check:layout": "node tools/layout-check.cjs",
+    "postbuild": "python3 tools/phrase-breaks.py"
   },
   "dependencies": {
     "astro": "^7.4.4"
