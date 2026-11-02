@@ -61,6 +61,8 @@ for f in sorted(glob.glob('backup/original/pages/*.html')):
         blk = lambda x: sorted(norm(d.get_text()) for d in x.find_all(class_='block_outer'))
         if blk(o) != blk(b) or not blk(o): errs.append('block texts differ (order ignored)')
         ot = bt
+        lk = lambda x: sorted(norm_link(a['href']) for d in x.find_all(class_='block_outer') for a in d.find_all('a', href=True))
+        ol, bl = lk(o), lk(b)   # ヒーローのボタン等、ブロック外に追加した要素のリンクは除く
     if ot != bt: errs.append(f'text differs (orig {len(ot)} vs built {len(bt)})')
     if oi != bi: errs.append(f'images differ: {set(oi) ^ set(bi)}')
     if ol != bl: errs.append(f'links differ: {set(ol) ^ set(bl)}')

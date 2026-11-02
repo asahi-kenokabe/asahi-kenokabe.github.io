@@ -36,31 +36,23 @@ const footerNav = nav.filter((c) => !c.children.length && c.href !== 'index.html
   <body>
     <header class="site-header">
       <div class="inner">
-        <a class="logo" href="/"><img src="/images/header.png.webp" alt={site.name} /></a>
-        <div class="head-contact">
-          <a class="tel" href={`tel:${site.tel}`}>{site.tel}</a>
-          <span class="hours">受付 {site.hours.map((h) => `${h.label}${h.value}`).join(' / ')}(定休日: {site.closed})</span>
-        </div>
+        <a class="brand" href="/">
+          <span class="brand-tag">地域のみなさまのための整備工場</span>
+          <span class="brand-name">{site.brand}</span>
+          <span class="brand-corp">{site.name}</span>
+        </a>
+        <a class="head-tel" href={`tel:${site.tel}`}><small>TEL</small><strong>{site.tel}</strong></a>
       </div>
-      <nav class="global-nav" aria-label="メインメニュー">
-        <ul class="nav-pc">
+      <details class="nav-sp">
+        <summary>メニュー</summary>
+        <ul>
           {nav.map((c) => (
             <li class={c.href === file || c.children.some((x) => x.href === file) ? 'current' : ''}>
               <a href={c.href === 'index.html' ? '/' : `/${c.href}`}>{c.title}</a>
             </li>
           ))}
         </ul>
-        <details class="nav-sp">
-          <summary>メニュー</summary>
-          <ul>
-            {nav.map((c) => (
-              <li class={c.href === file || c.children.some((x) => x.href === file) ? 'current' : ''}>
-                <a href={c.href === 'index.html' ? '/' : `/${c.href}`}>{c.title}</a>
-              </li>
-            ))}
-          </ul>
-        </details>
-      </nav>
+      </details>
     </header>
 
     <div class="layout">
@@ -126,7 +118,6 @@ const footerNav = nav.filter((c) => !c.children.length && c.href !== 'index.html
           <h3>店舗情報</h3>
           <p class="name">{site.name}</p>
           <p>{site.address}</p>
-          <p>TEL <a href={`tel:${site.tel}`}>{site.tel}</a></p>
           <p><a href="/access.html">アクセス・地図</a></p>
         </section>
       </aside>
