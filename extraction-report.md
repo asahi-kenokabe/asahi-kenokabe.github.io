@@ -42,7 +42,7 @@
 - GitHub Pages の有効化(Settings → Pages → Source: GitHub Actions)と、`CNAME` の設定(`www` 付きか apex か未決定)。
 - 各ページ個別の見出し・本文の文字サイズ、トップページの意匠など、デザインの作り込みはこれから。
 
-## 仮URL(github.io/asahi-hp/)対応
+## 仮URL(github.io/asahi-hp/)対応(`asahi-kenokabe.github.io` への移行で、デプロイ時の適用は撤去済み)
 
 - 本文・レイアウトのリンクと画像は `/` 始まりの絶対パスのため、プロジェクトパス配信では壊れる。`tools/prefix-base.mjs` がビルド後に `BASE_PATH` を付与する(冪等)。ワークフローで `BASE_PATH=/asahi-hp` を指定。
 - 独自ドメイン接続時はワークフローの該当ステップを削除する(`TODO.md` 項目0)。

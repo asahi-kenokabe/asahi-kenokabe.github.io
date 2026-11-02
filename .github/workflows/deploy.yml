@@ -25,10 +25,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      # 仮URL(github.io/asahi-hp/)確認用。独自ドメイン接続時にこの2行(step)を削除する
-      - run: node tools/prefix-base.mjs
-        env:
-          BASE_PATH: /asahi-hp
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
