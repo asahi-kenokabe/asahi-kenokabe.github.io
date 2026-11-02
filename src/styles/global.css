@@ -76,3 +76,21 @@ iframe { max-width: 100%; border: 0; width: 100%; min-height: 360px; }
   .global-nav .nav-sp ul { flex-direction: column; }
   main .img_box_left, main .img_left, main .img_box_right, main .img_right { float: none; max-width: 100%; margin: 0 0 8px; }
 }
+
+/* アクセスページ: 共通情報(営業時間・定休日)+ 店舗カード2つ */
+.access-hours, .store-card { margin: 0 0 28px; border: 1px solid var(--c-line); border-radius: 6px; background: #fff; overflow: hidden; }
+.access-hours { padding: 0 0 14px; border-color: var(--c-main); }
+main .access-hours h2, main .store-card h2 { margin: 0 0 14px; font-size: 1.25rem; }
+main .access-hours h2 span, main .store-card h2 span { margin-left: .8em; font-size: .9rem; font-weight: 400; }
+.access-hours dl { margin: 0 18px; }
+.access-hours dl div { display: flex; gap: 1em; padding: 6px 0; border-bottom: 1px dotted var(--c-line); }
+.access-hours dt { flex: 0 0 5.5em; font-weight: 700; }
+.access-hours dd { margin: 0; }
+.access-hours .link { margin: 10px 18px 0; }
+.store-tel { margin: 0 18px 14px; }
+.tel-btn { display: inline-block; padding: 8px 22px; border-radius: 6px; background: var(--c-accent); color: #fff; font-size: 1.4rem; font-weight: 700; text-decoration: none; }
+main .store-card h2 a, .store-card .tel-btn { color: #fff; }
+.store-card .googleMapOuter { margin: 0 18px; }
+.store-address { margin: 12px 18px 0; font-size: 1.1rem; font-weight: 700; }
+.store-note { margin: 4px 18px 16px; }
+.store-card .store-address:last-child { margin-bottom: 16px; }
