@@ -34,6 +34,11 @@ main h2 { margin: 1.6em 0 .8em; padding: .3em .7em; background: var(--c-main); c
 main h3 { margin: 1.4em 0 .6em; padding-bottom: .2em; border-bottom: 2px solid var(--c-accent); font-size: 1.1rem; }
 main .img_box_left, main .img_left { float: left; margin: 0 16px 8px 0; max-width: 45%; }
 main .img_box_right, main .img_right { float: right; margin: 0 0 8px 16px; max-width: 45%; }
+/* size_max は本文幅いっぱいに表示する(元サイトと同じ) */
+main .img_box_left:has(img.size_max), main .img_box_right:has(img.size_max) { float: none; max-width: 100%; margin: 0 0 8px; }
+main img.size_max { width: 100%; height: auto; }
+/* 見出し内のリンク(iOS 等の電話番号自動リンクを含む)が背景色と同化しないようにする */
+main h2 a { color: inherit; text-decoration: underline; }
 main .box_common, main .box_free { overflow: hidden; margin-bottom: 20px; }
 main table { border-collapse: collapse; width: 100%; font-size: .9rem; }
 main th, main td { border: 1px solid var(--c-line); padding: 6px 8px; vertical-align: top; }
