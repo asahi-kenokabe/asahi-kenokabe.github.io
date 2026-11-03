@@ -307,3 +307,7 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
   .siblings li, .menu-tree li, .sidebar details li { font-size: clamp(.8rem, 3.6vw, .95rem); }
   main h3 { font-size: clamp(.9rem, 4.2vw, 1.1rem); }
 }
+
+/* 電話ボタン: 文字拡大時も枠に収まるよう、文字サイズの下限と左右の余白を下げる */
+.tel-btn { font-size: clamp(.95rem, 5.6vw, 1.4rem); }
+@media (max-width: 430px) { .tel-btn { padding: 10px 16px; } }

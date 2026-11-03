@@ -3,6 +3,9 @@
 // 検出する項目:
 //   page-overflow    ページ全体が横にはみ出す
 //   beyond-viewport  画面の右端を超える要素(横スクロール枠の外)
+//   text-overflow    文字・中身が、自分の枠(カード・見出し・段落・リンクなど)の右からはみ出している
+//   wbr-in-flex      改行の印(<wbr>)が、横並び・縦並び(flex/grid)の部品として、場所を取っている
+//   unbreakable-run  空白・<wbr>・<br> がなく、改行できない文字の連なりが、枠の幅より長い(Safari など、Chromium より改行を許さないブラウザではみ出す)
 //   phone-wrapped    電話番号が途中で折り返されている
 //   orphan-char      見出し・リンク・ボタン・表のセル・ナビで、1文字だけの行ができている
 //   narrow-cell      表のセルが細すぎて、1行に3文字入らない
@@ -50,6 +53,9 @@ function inPage() {
 
   document.querySelectorAll('body *').forEach((el) => {
     if (!visible(el) || ['IFRAME', 'SCRIPT', 'STYLE'].includes(el.tagName)) return;
+    // 自分の枠からのはみ出し: スクロール幅が表示幅より大きく、overflow を隠していない・スクロールさせていない要素
+    { const cs0 = getComputedStyle(el);
+      if (['block', 'flex', 'grid', 'list-item', 'table-cell', 'inline-block', 'flow-root'].includes(cs0.display) && cs0.overflowX === 'visible' && el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 2 && !inScroller(el) && !['HTML', 'BODY'].includes(el.tagName)) push('text-overflow', el, `中身 ${el.scrollWidth}px > 枠 ${el.clientWidth}px`); }
     const r = el.getBoundingClientRect();
     if (r.right > vw + 1 && !inScroller(el) && getComputedStyle(el).position !== 'fixed') push('beyond-viewport', el, `right ${Math.round(r.right)} > ${vw}`);
     const s = getComputedStyle(el);
@@ -121,6 +127,43 @@ function inPage() {
       const bad = lines.find((l) => l.chars.length === 1 && !/[。、．，！？」）)]/.test(l.chars[0]));
       if (bad) push('orphan-char', el, `「${bad.chars[0]}」だけの行 / ${lines.length}行 [${lines.map((l) => l.chars.join('')).join(' | ')}]`);
     }
+  });
+  // ブラウザに依存しない静的検査: 改行できる印(空白・<wbr>・<br>・ブロックの境目)の間の、文字の連なりの推定幅が、枠の幅を超えていないか
+  {
+    const BLOCKISH = ['block', 'list-item', 'table-cell', 'flex', 'grid', 'flow-root'];
+    const isWide = (ch) => /[぀-ヿ㐀-鿿＀-￯　-〿]/.test(ch);
+    document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,td,th,dd,dt,summary,a,button,label,div').forEach((el) => {
+      if (!visible(el)) return;
+      const cs = getComputedStyle(el);
+      if (!BLOCKISH.includes(cs.display) && !(el.tagName === 'A' && cs.display === 'inline')) return;
+      const avail = el.tagName === 'A' && cs.display === 'inline' ? (el.closest('p,li,td,th,div,h1,h2,h3,h4,h5,h6') || el).clientWidth : el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (avail <= 0) return;
+      let run = 0, max = 0, maxText = '', cur = '';
+      const flush = () => { if (run > max) { max = run; maxText = cur; } run = 0; cur = ''; };
+      const walk = (node) => {
+        for (const ch of node.childNodes) {
+          if (ch.nodeType === 3) {
+            const fs = parseFloat(getComputedStyle(ch.parentElement).fontSize);
+            for (const c of ch.textContent) {
+              if (/[\s　]/.test(c)) { flush(); continue; }
+              run += (isWide(c) ? 1 : 0.55) * fs; cur += c;
+            }
+          } else if (ch.nodeType === 1) {
+            if (['WBR', 'BR'].includes(ch.tagName)) { flush(); continue; }
+            const d = getComputedStyle(ch).display;
+            if (d === 'none') continue;
+            if (BLOCKISH.includes(d) || d === 'table' || d === 'img') { flush(); continue; }   // ブロックの子は、別に検査する
+            walk(ch);
+          }
+        }
+      };
+      walk(el); flush();
+      if (max > avail + 1 && max > 24) push('unbreakable-run', el, `改行できない連なり 約${Math.round(max)}px > 枠 ${Math.round(avail)}px 「${maxText.slice(0, 18)}」`);
+    });
+  }
+  document.querySelectorAll('wbr').forEach((w) => {
+    const d = w.parentElement && getComputedStyle(w.parentElement).display;
+    if (['flex', 'grid', 'inline-flex', 'inline-grid'].includes(d)) push('wbr-in-flex', w.parentElement, `<wbr> が ${d} の子`);
   });
   document.querySelectorAll('td,th').forEach((c) => {
     if (!visible(c)) return;
