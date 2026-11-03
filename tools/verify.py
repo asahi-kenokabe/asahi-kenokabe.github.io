@@ -13,6 +13,11 @@ REORDERED = {'index'}
 BANNER_IMGS = {'10524_100_r35_free01_01_6_img.png.webp', '10524_100_r40_free01_01_7_img.png.webp', '10524_100_r56_free01_01_5_img.png.webp', '10524_100_r61_free01_01_10_img.png.webp', '10524_100_r7_free01_01_4_img.png.webp', '10524_100_r51_free01_01_6_img.png.webp', '10524_100_r24_free01_01_3_img.png.webp', '10524_100_r53_free01_01_8_img.png.webp', '10524_100_r21_free01_01_2_img.png.webp', '10524_100_r28_free01_01_5_img.png.webp', '10524_100_r13_free01_01_3_img.png.webp', '10524_100_r74_free01_01_8_img.png.webp', '10524_100_r42_free01_01_4_img.png.webp', '10524_100_r55_free01_01_5_img.png.webp', '10524_100_r27_free01_01_5_img.png.webp', '10524_100_r8_free01_01_3_img.png.webp', '10524_100_r6_free01_01_5_img.png.webp', '10524_100_r46_free01_01_4_img.png.webp', '10524_23_block01_01_4_img.png.webp', '10524_100_r15_free01_01_3_img.png.webp', '10524_23_block08_01_5_img.png.webp', '10524_100_r50_free01_01_6_img.png.webp', '10524_100_r23_free01_01_2_img.png.webp', '10524_100_r36_free01_01_4_img.png.webp', '10524_100_r29_free01_01_4_img.png.webp', '10524_100_r16_free01_01_3_img.png.webp', '10524_100_r38_free01_01_4_img.png.webp', '10524_100_r45_free01_01_7_img.png.webp', '10524_100_r71_free01_01_2_img.png.webp', '10524_100_r49_free01_01_5_img.png.webp', '10524_100_r9_free01_01_3_img.png.webp', '10524_100_r41_free01_01_5_img.png.webp', '10524_110_free01_02_6_img.png.webp', '10524_100_r69_free01_01_7_img.png.webp', '10524_100_r70_free01_01_7_img.png.webp', '10524_100_r68_free01_01_7_img.png.webp', '10524_100_r32_free01_01_5_img.png.webp', '10524_100_r25_free01_01_2_img.png.webp'}
 # 表記だけを意図的に直したページ(decisions.md 参照): 元の本文に適用する置換と、追加したリンク。それ以外の差分は従来どおり NG にする
 EXPECTED = {
+    # お問合せページ: Google フォーム自身が、同じ見出し・案内文・注意書きを表示するため、サイト側の重複を削除した(decisions.md 参照)
+    'contact': {
+        'text': [('気になる点はお気軽にお問合せください。通常、2営業日以内にご回答させていただきます。', '')],
+        'added_links': set(),
+    },
     'company': {
         'text': [('TEL:078', 'TEL：078'), ('FAX:078', 'FAX：078'), ('9：00～12：00午後 13：00～17：00', '9:00〜12:00午後13:00〜17:00')],
         'added_links': {'tel:0785915399', 'tel:0785915362'},

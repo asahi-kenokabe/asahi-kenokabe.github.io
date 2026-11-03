@@ -6,7 +6,6 @@ const formPage = 'https://docs.google.com/forms/d/e/1FAIpQLSeAa0SaycUAIJtYg4dGlJ
 const formUrl = `${formPage}?embedded=true`;
 ---
 <div class="contact-form" data-block="contact_form">
-  <h2>メールでのお問合せ</h2>
   {formPage ? (
     <>
       <iframe src={formUrl} title="お問合せフォーム" loading="lazy" height="1150"></iframe>
@@ -19,5 +18,4 @@ const formUrl = `${formPage}?embedded=true`;
     </p>
   )}
   <p>お急ぎの場合は、お電話でどうぞ。<a class="tel-inline" href={`tel:${site.tel}`}>{site.tel}</a></p>
-  <p>※営業目的のメールはお控えください。</p>
 </div>
